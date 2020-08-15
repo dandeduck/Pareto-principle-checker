@@ -2,16 +2,17 @@ package github.dandeduck;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SimpleParetoChecker implements ParetoChecker {
-    private final List<Entry> entries;
+    private final List<Integer> entries;
 
     public SimpleParetoChecker(Entry... entries) {
         this(Arrays.asList(entries));
     }
 
     public SimpleParetoChecker(List<Entry> entries) {
-        this.entries = entries;
+        this.entries = entries.stream().mapToInt(Entry::quantity).sorted().boxed().collect(Collectors.toList());
     }
 
     @Override
@@ -20,15 +21,13 @@ public class SimpleParetoChecker implements ParetoChecker {
         int quantity = 0;
 
         for (int i = 0; i < targetIndex; i++)
-            quantity += entries.get(i).quantity();
+            quantity += entries.get(i);
 
         return quantity;
     }
 
     @Override
     public int totalQuantity() {
-        return entries.stream()
-                .mapToInt(Entry::quantity)
-                .sum();
+        return entries.stream().mapToInt(value -> value).sum();
     }
 }
