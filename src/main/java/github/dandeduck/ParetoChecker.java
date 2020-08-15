@@ -6,7 +6,7 @@ public interface ParetoChecker {
     }
 
     default boolean checkForSpecificRatio(double entryPercentage, double quantityPercentage) {
-        return (double) quantityUntilPercentage(entryPercentage)/totalQuantity() >= quantityPercentage;
+        return quantityUntilPercentage(entryPercentage) >= quantityPercentage * totalQuantity();
     }
 
     int quantityUntilPercentage(double entryPercentage);
